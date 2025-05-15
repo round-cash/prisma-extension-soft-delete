@@ -1,7 +1,7 @@
 {
   "name": "@roundtreasury/prisma-extension-soft-delete",
-  "version": "2.0.0",
-  "description": "Prisma extension for soft deleting records",
+  "version": "1.0.0",
+  "description": "Round Treasury Prisma extension for soft deleting records",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "module": "dist/esm/index.js",
