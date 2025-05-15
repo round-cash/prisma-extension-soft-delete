@@ -22,12 +22,17 @@ import {
   createWhereParams,
   createGroupByParams,
   CreateParams,
+  createContext,
 } from "./helpers/createParams";
 
-import { Config, ModelConfig } from "./types";
+import { Config, Context, ModelConfig } from "./types";
 import { ModifyResult, modifyReadResult } from "./helpers/modifyResult";
 
-type ConfigBound<F> = F extends (x: ModelConfig, ...args: infer P) => infer R
+type ConfigBound<F> = F extends (
+  c: Context,
+  x: ModelConfig,
+  ...args: infer P
+) => infer R
   ? (...args: P) => R
   : never;
 
@@ -39,6 +44,7 @@ export function createSoftDeleteExtension({
     allowToOneUpdates: false,
     allowCompoundUniqueIndexWhere: false,
   },
+  dmmf,
 }: Config) {
   if (!defaultConfig.field) {
     throw new Error(
@@ -62,6 +68,8 @@ export function createSoftDeleteExtension({
     }
   });
 
+  const context = createContext(dmmf ?? Prisma.dmmf);
+
   const createParamsByModel = Object.keys(modelConfig).reduce<
     Record<string, Record<string, ConfigBound<CreateParams> | undefined>>
   >((acc, model) => {
@@ -69,22 +77,30 @@ export function createSoftDeleteExtension({
     return {
       ...acc,
       [model]: {
-        delete: createDeleteParams.bind(null, config),
-        deleteMany: createDeleteManyParams.bind(null, config),
-        update: createUpdateParams.bind(null, config),
-        updateMany: createUpdateManyParams.bind(null, config),
-        upsert: createUpsertParams.bind(null, config),
-        findFirst: createFindFirstParams.bind(null, config),
-        findFirstOrThrow: createFindFirstOrThrowParams.bind(null, config),
-        findUnique: createFindUniqueParams.bind(null, config),
-        findUniqueOrThrow: createFindUniqueOrThrowParams.bind(null, config),
-        findMany: createFindManyParams.bind(null, config),
-        count: createCountParams.bind(null, config),
-        aggregate: createAggregateParams.bind(null, config),
-        where: createWhereParams.bind(null, config),
-        include: createIncludeParams.bind(null, config),
-        select: createSelectParams.bind(null, config),
-        groupBy: createGroupByParams.bind(null, config),
+        delete: createDeleteParams.bind(null, context, config),
+        deleteMany: createDeleteManyParams.bind(null, context, config),
+        update: createUpdateParams.bind(null, context, config),
+        updateMany: createUpdateManyParams.bind(null, context, config),
+        upsert: createUpsertParams.bind(null, context, config),
+        findFirst: createFindFirstParams.bind(null, context, config),
+        findFirstOrThrow: createFindFirstOrThrowParams.bind(
+          null,
+          context,
+          config
+        ),
+        findUnique: createFindUniqueParams.bind(null, context, config),
+        findUniqueOrThrow: createFindUniqueOrThrowParams.bind(
+          null,
+          context,
+          config
+        ),
+        findMany: createFindManyParams.bind(null, context, config),
+        count: createCountParams.bind(null, context, config),
+        aggregate: createAggregateParams.bind(null, context, config),
+        where: createWhereParams.bind(null, context, config),
+        include: createIncludeParams.bind(null, context, config),
+        select: createSelectParams.bind(null, context, config),
+        groupBy: createGroupByParams.bind(null, context, config),
       },
     };
   }, {});
@@ -96,8 +112,8 @@ export function createSoftDeleteExtension({
     return {
       ...acc,
       [model]: {
-        include: modifyReadResult.bind(null, config),
-        select: modifyReadResult.bind(null, config),
+        include: modifyReadResult.bind(null, context, config),
+        select: modifyReadResult.bind(null, context, config),
       },
     };
   }, {});

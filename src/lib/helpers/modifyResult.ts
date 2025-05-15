@@ -1,4 +1,4 @@
-import { ModelConfig } from "../types";
+import { Context, ModelConfig } from "../types";
 import { stripDeletedFieldFromResults } from "../utils/nestedReads";
 import {
   filterSoftDeletedResults,
@@ -7,6 +7,7 @@ import {
 import { CreateParamsReturn } from "./createParams";
 
 export type ModifyResult = (
+  context: Context,
   config: ModelConfig,
   result: any,
   params: CreateParamsReturn["params"],
@@ -14,6 +15,7 @@ export type ModifyResult = (
 ) => any;
 
 export function modifyReadResult(
+  _: Context,
   config: ModelConfig,
   result: any,
   params: CreateParamsReturn["params"],
