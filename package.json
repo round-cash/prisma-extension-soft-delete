@@ -1,6 +1,6 @@
 {
   "name": "@roundtreasury/prisma-extension-soft-delete",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Round Treasury Prisma extension for soft deleting records",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
   "author": "Olivier Wilkinson",
   "license": "Apache-2.0",
   "dependencies": {
-    "@roundtreasury/prisma-extension-nested-operations": "^1.1.0"
+    "@roundtreasury/prisma-extension-nested-operations": "^1.2.0"
   },
   "peerDependencies": {
     "@prisma/client": "*"

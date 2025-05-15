@@ -1,6 +1,6 @@
 import { NestedParams } from "@roundtreasury/prisma-extension-nested-operations";
 
-import { BaseDMMF } from "@prisma/client/runtime/library";
+import type { BaseDMMF } from "@prisma/client/runtime/library";
 import { Context, ModelConfig } from "../types";
 import { addDeletedToSelect } from "../utils/nestedReads";
 

@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { Prisma as PrismaExtensions } from "@prisma/client/extension";
 import {
   NestedOperation,
@@ -57,7 +57,13 @@ export function createSoftDeleteExtension({
     );
   }
 
-  const dmmfToUse = dmmf ?? Prisma.dmmf;
+  let dmmfToUse = dmmf;
+
+  if (!dmmfToUse) {
+    throw new Error(
+      "prisma-extension-soft-delete: dmmf is required, pass it in manually"
+    );
+  }
 
   const modelConfig: Partial<Record<Prisma.ModelName, ModelConfig>> = {};
 
