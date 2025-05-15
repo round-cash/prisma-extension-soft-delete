@@ -3,7 +3,7 @@ import { Prisma as PrismaExtensions } from "@prisma/client/extension";
 import {
   NestedOperation,
   withNestedOperations,
-} from "prisma-extension-nested-operations";
+} from "@roundtreasury/prisma-extension-nested-operations";
 import {
   createAggregateParams,
   createCountParams,
@@ -57,6 +57,8 @@ export function createSoftDeleteExtension({
     );
   }
 
+  const dmmfToUse = dmmf ?? Prisma.dmmf;
+
   const modelConfig: Partial<Record<Prisma.ModelName, ModelConfig>> = {};
 
   Object.keys(models).forEach((model) => {
@@ -68,7 +70,7 @@ export function createSoftDeleteExtension({
     }
   });
 
-  const context = createContext(dmmf ?? Prisma.dmmf);
+  const context = createContext(dmmfToUse);
 
   const createParamsByModel = Object.keys(modelConfig).reduce<
     Record<string, Record<string, ConfigBound<CreateParams> | undefined>>
@@ -127,6 +129,7 @@ export function createSoftDeleteExtension({
         $allModels: {
           // @ts-expect-error - we don't know what the client is
           $allOperations: withNestedOperations({
+            dmmf: dmmfToUse,
             async $rootOperation(initialParams) {
               const createParams =
                 createParamsByModel[initialParams.model || ""]?.[
