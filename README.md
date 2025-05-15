@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Prisma Extension Soft Delete</h1>
 
-<p>Prisma extension for soft deleting records.</p>
+<p>Round Prisma extension for soft deleting records.</p>
 
 <p>
   Soft deleting records is a common pattern in many applications. This library provides an extension for Prisma that
