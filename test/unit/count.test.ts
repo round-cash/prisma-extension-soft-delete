@@ -1,11 +1,12 @@
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
+import { Prisma } from "@prisma/client";
 
 describe("count", () => {
   it("does not change count action if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {} })
+      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.count({});
@@ -19,13 +20,16 @@ describe("count", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
     await extendedClient.user.count(undefined);
 
     // params have been modified
-    expect(extendedClient.user.count.query).toHaveBeenCalledWith({ where: { deleted: false } });
+    expect(extendedClient.user.count.query).toHaveBeenCalledWith({
+      where: { deleted: false },
+    });
   });
 
   it("excludes deleted records from count with empty args", async () => {
@@ -33,6 +37,7 @@ describe("count", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -49,6 +54,7 @@ describe("count", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 

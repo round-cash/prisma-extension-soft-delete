@@ -2,6 +2,7 @@ import faker from "faker";
 
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
+import { Prisma } from "@prisma/client";
 
 describe("config", () => {
   it('does not soft delete models where config is passed as "false"', async () => {
@@ -11,6 +12,7 @@ describe("config", () => {
         models: {
           User: false,
         },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -54,6 +56,7 @@ describe("config", () => {
           field: "deletedAt",
           createValue: () => deletedAt,
         },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -101,6 +104,7 @@ describe("config", () => {
         defaultConfig: {
           createValue: () => new Date(),
         },
+        dmmf: Prisma.dmmf,
       });
     }).toThrowError(
       "prisma-extension-soft-delete: defaultConfig.field is required"
@@ -117,6 +121,7 @@ describe("config", () => {
         defaultConfig: {
           field: "deletedAt",
         },
+        dmmf: Prisma.dmmf,
       });
     }).toThrowError(
       "prisma-extension-soft-delete: defaultConfig.createValue is required"
@@ -135,6 +140,7 @@ describe("config", () => {
           },
           Comment: true,
         },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -186,6 +192,7 @@ describe("config", () => {
             return null;
           },
         },
+        dmmf: Prisma.dmmf,
       })
     );
 

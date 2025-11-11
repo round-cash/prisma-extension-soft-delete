@@ -1,11 +1,12 @@
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
+import { Prisma } from "@prisma/client";
 
 describe("findFirstOrThrow", () => {
   it("does not change findFirstOrThrow params if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {} })
+      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.findFirstOrThrow({
@@ -21,7 +22,7 @@ describe("findFirstOrThrow", () => {
   it("does not modify findFirstOrThrow results", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true } })
+      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
     );
 
     extendedClient.user.findFirstOrThrow.query.mockImplementation((() =>
@@ -39,6 +40,7 @@ describe("findFirstOrThrow", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -58,7 +60,7 @@ describe("findFirstOrThrow", () => {
   it("excludes deleted records from findFirstOrThrow with no args", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true } })
+      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.findFirstOrThrow(undefined);
@@ -74,7 +76,7 @@ describe("findFirstOrThrow", () => {
   it("excludes deleted records from findFirstOrThrow with empty args", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true } })
+      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.findFirstOrThrow({});
@@ -92,6 +94,7 @@ describe("findFirstOrThrow", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 

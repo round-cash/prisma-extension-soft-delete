@@ -2,12 +2,13 @@ import faker from "faker";
 
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
+import { Prisma } from "@prisma/client";
 
 describe("include", () => {
   it("does not change include params if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {} })
+      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.update({
@@ -29,6 +30,7 @@ describe("include", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { Comment: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -59,6 +61,7 @@ describe("include", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { Comment: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -94,6 +97,7 @@ describe("include", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -124,6 +128,7 @@ describe("include", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -153,6 +158,7 @@ describe("include", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -191,6 +197,7 @@ describe("include", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -229,6 +236,7 @@ describe("include", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { Comment: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -287,6 +295,7 @@ describe("include", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -336,6 +345,7 @@ describe("include", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { Comment: true },
+        dmmf: Prisma.dmmf,
       })
     );
 

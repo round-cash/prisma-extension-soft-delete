@@ -1,4 +1,4 @@
-import { PrismaClient, Profile, User } from "@prisma/client";
+import { Prisma, PrismaClient, Profile, User } from "@prisma/client";
 import faker from "faker";
 
 import { createSoftDeleteExtension } from "../../src";
@@ -12,7 +12,10 @@ describe("fluent", () => {
   beforeAll(async () => {
     testClient = new PrismaClient();
     testClient = testClient.$extends(
-      createSoftDeleteExtension({ models: { Comment: true, Profile: true } })
+      createSoftDeleteExtension({
+        models: { Comment: true, Profile: true },
+        dmmf: Prisma.dmmf,
+      })
     );
 
     profile = await client.profile.create({

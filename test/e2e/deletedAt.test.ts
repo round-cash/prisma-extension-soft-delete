@@ -1,4 +1,4 @@
-import { PrismaClient, Profile, User } from "@prisma/client";
+import { Prisma, PrismaClient, Profile, User } from "@prisma/client";
 import faker from "faker";
 
 import { createSoftDeleteExtension } from "../../src";
@@ -12,18 +12,17 @@ describe("deletedAt", () => {
   beforeAll(async () => {
     testClient = new PrismaClient();
     testClient = testClient.$extends(
-      createSoftDeleteExtension(
-        {
-          models: {
-            User: {
-              field: "deletedAt",
-              createValue: (deleted) => {
-                return deleted ? new Date() : null;
-              },
+      createSoftDeleteExtension({
+        models: {
+          User: {
+            field: "deletedAt",
+            createValue: (deleted) => {
+              return deleted ? new Date() : null;
             },
           },
         },
-      )
+        dmmf: Prisma.dmmf,
+      })
     );
 
     profile = await client.profile.create({

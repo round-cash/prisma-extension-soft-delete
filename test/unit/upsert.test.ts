@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
 
@@ -5,7 +6,7 @@ describe("upsert", () => {
   it("does not modify upsert results", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true } })
+      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
     );
 
     extendedClient.user.upsert.query.mockImplementation(
@@ -30,6 +31,7 @@ describe("upsert", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -51,6 +53,7 @@ describe("upsert", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -86,6 +89,7 @@ describe("upsert", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 

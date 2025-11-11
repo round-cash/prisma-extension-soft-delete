@@ -1,11 +1,12 @@
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
+import { Prisma } from "@prisma/client";
 
 describe("findFirst", () => {
   it("does not change findFirst params if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {} })
+      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.findFirst({
@@ -21,7 +22,7 @@ describe("findFirst", () => {
   it("does not modify findFirst results", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true } })
+      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
     );
 
     extendedClient.user.findFirst.query.mockImplementation((() =>
@@ -42,6 +43,7 @@ describe("findFirst", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -61,7 +63,7 @@ describe("findFirst", () => {
   it("excludes deleted records from findFirst with no args", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true } })
+      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.findFirst(undefined);
@@ -77,7 +79,7 @@ describe("findFirst", () => {
   it("excludes deleted records from findFirst with empty args", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true } })
+      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.findFirst({});
@@ -95,6 +97,7 @@ describe("findFirst", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 

@@ -2,12 +2,13 @@ import faker from "faker";
 
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
+import { Prisma } from "@prisma/client";
 
 describe("where", () => {
   it("does not change where action if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {} })
+      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.deleteMany({
@@ -37,7 +38,10 @@ describe("where", () => {
   it("changes root where correctly when model is nested", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { Comment: true } })
+      createSoftDeleteExtension({
+        models: { Comment: true },
+        dmmf: Prisma.dmmf,
+      })
     );
 
     await extendedClient.user.deleteMany({
@@ -97,6 +101,7 @@ describe("where", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { Post: true, Comment: true, User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -163,7 +168,7 @@ describe("where", () => {
   it("changes root where correctly when model is deeply nested", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { Post: true } })
+      createSoftDeleteExtension({ models: { Post: true }, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.deleteMany({
@@ -248,6 +253,7 @@ describe("where", () => {
           Comment: true,
           Post: true,
         },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -315,6 +321,7 @@ describe("where", () => {
           Comment: true,
           Post: true,
         },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -413,6 +420,7 @@ describe("where", () => {
         models: {
           Comment: true,
         },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -453,6 +461,7 @@ describe("where", () => {
         models: {
           Comment: true,
         },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -494,6 +503,7 @@ describe("where", () => {
           Comment: true,
           Post: true,
         },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -543,6 +553,7 @@ describe("where", () => {
           Comment: true,
           Post: true,
         },
+        dmmf: Prisma.dmmf,
       })
     );
 

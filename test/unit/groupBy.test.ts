@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
 
@@ -6,7 +7,7 @@ describe("groupBy", () => {
   it("does not change groupBy action if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {} })
+      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
     );
 
     await extendedClient.user.groupBy({
@@ -26,7 +27,7 @@ describe("groupBy", () => {
   it("does not modify groupBy results", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true } })
+      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
     );
 
     extendedClient.user.groupBy.query.mockImplementation(
@@ -47,6 +48,7 @@ describe("groupBy", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
@@ -72,6 +74,7 @@ describe("groupBy", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
+        dmmf: Prisma.dmmf,
       })
     );
 
