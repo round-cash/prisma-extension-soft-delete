@@ -3,7 +3,7 @@ import { Prisma as PrismaExtensions } from "@prisma/client/extension";
 import {
   NestedOperation,
   withNestedOperations,
-} from "prisma-extension-nested-operations";
+} from "@roundtreasury/prisma-extension-nested-operations";
 import {
   createAggregateParams,
   createCountParams,
