@@ -1,12 +1,12 @@
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
-import { Prisma } from "@prisma/client";
+import { modelsMeta } from "../../generated/nested-ops-meta";
 
 describe("delete", () => {
   it("does not change delete action if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: {}, modelsMeta })
     );
 
     await extendedClient.user.delete({ where: { id: 1 } });
@@ -20,7 +20,7 @@ describe("delete", () => {
   it("does not change nested delete action if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: {}, modelsMeta })
     );
 
     await extendedClient.user.update({
@@ -46,7 +46,7 @@ describe("delete", () => {
   it("does not modify delete results", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: { User: true }, modelsMeta })
     );
 
     const queryResult = { id: 1, deleted: true };
@@ -60,7 +60,7 @@ describe("delete", () => {
   it("does not modify delete with no args", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: { User: true }, modelsMeta })
     );
 
     client.user.delete.mockImplementation((() => Promise.resolve({})) as any);
@@ -75,7 +75,7 @@ describe("delete", () => {
   it("does not modify delete with no where", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: { User: true }, modelsMeta })
     );
 
     // @ts-expect-error - where is required
@@ -91,7 +91,7 @@ describe("delete", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -109,7 +109,7 @@ describe("delete", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { Profile: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -134,7 +134,7 @@ describe("delete", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { Profile: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -159,7 +159,7 @@ describe("delete", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { Post: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -191,7 +191,7 @@ describe("delete", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { Post: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 

@@ -10,4 +10,4 @@ coverage
 # Mac
 .DS_Store
 
-prisma/generated/
+generated/prisma/

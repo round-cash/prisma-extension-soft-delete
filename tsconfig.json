@@ -8,7 +8,8 @@
     "declaration": true,
     "outDir": "./dist",
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "types": ["jest", "node"]
   },
   "exclude": []
 }

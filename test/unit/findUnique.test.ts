@@ -1,12 +1,12 @@
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
-import { Prisma } from "@prisma/client";
+import { modelsMeta } from "../../generated/nested-ops-meta";
 
 describe("findUnique", () => {
   it("does not change findUnique params if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: {}, modelsMeta })
     );
 
     await extendedClient.user.findUnique({
@@ -22,7 +22,7 @@ describe("findUnique", () => {
   it("does not modify findUnique results", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: { User: true }, modelsMeta })
     );
 
     const queryResult = { id: 1, deleted: true };
@@ -42,7 +42,7 @@ describe("findUnique", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -65,7 +65,7 @@ describe("findUnique", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -88,7 +88,7 @@ describe("findUnique", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -117,7 +117,7 @@ describe("findUnique", () => {
             allowCompoundUniqueIndexWhere: true,
           },
         },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -147,7 +147,7 @@ describe("findUnique", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -166,7 +166,7 @@ describe("findUnique", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 

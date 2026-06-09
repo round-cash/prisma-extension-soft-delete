@@ -1,36 +1,23 @@
 import { NestedParams } from "@roundtreasury/prisma-extension-nested-operations";
 
-import type { BaseDMMF } from "@prisma/client/runtime/library";
-import { Context, ModelConfig } from "../types";
+import { Context, ModelConfig, ModelsMeta } from "../types";
 import { addDeletedToSelect } from "../utils/nestedReads";
 
-export const createContext = (dmmf: BaseDMMF): Context => {
+export const createContext = (modelsMeta: ModelsMeta): Context => {
   const uniqueFieldsByModel: Record<string, string[]> = {};
   const uniqueIndexFieldsByModel: Record<string, string[]> = {};
 
-  dmmf.datamodel.models.forEach((model) => {
-    // add unique fields derived from indexes
-    const uniqueIndexFields: string[] = [];
-    model.uniqueFields.forEach((field) => {
-      uniqueIndexFields.push(field.join("_"));
-    });
-    uniqueIndexFieldsByModel[model.name] = uniqueIndexFields;
-
-    // add id field and unique fields from @unique decorator
-    const uniqueFields: string[] = [];
-    model.fields.forEach((field) => {
-      if (field.isId || field.isUnique) {
-        uniqueFields.push(field.name);
-      }
-    });
-    uniqueFieldsByModel[model.name] = uniqueFields;
+  Object.entries(modelsMeta).forEach(([modelName, meta]) => {
+    uniqueFieldsByModel[modelName] = meta.uniqueFields;
+    uniqueIndexFieldsByModel[modelName] = meta.uniqueIndexFields;
   });
 
   return { uniqueFieldsByModel, uniqueIndexFieldsByModel };
 };
 
-export type Params = Omit<NestedParams<any>, "operation"> & {
+export type Params = Omit<NestedParams<any>, "operation" | "model"> & {
   operation: string;
+  model?: string;
 };
 
 export type CreateParamsReturn = {

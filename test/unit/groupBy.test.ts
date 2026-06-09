@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { modelsMeta } from "../../generated/nested-ops-meta";
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
 
@@ -7,7 +7,7 @@ describe("groupBy", () => {
   it("does not change groupBy action if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: {}, modelsMeta })
     );
 
     await extendedClient.user.groupBy({
@@ -27,7 +27,7 @@ describe("groupBy", () => {
   it("does not modify groupBy results", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: { User: true }, modelsMeta })
     );
 
     extendedClient.user.groupBy.query.mockImplementation(
@@ -48,7 +48,7 @@ describe("groupBy", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -74,7 +74,7 @@ describe("groupBy", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 

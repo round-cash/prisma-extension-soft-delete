@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { modelsMeta } from "../../generated/nested-ops-meta";
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
 
@@ -6,7 +6,7 @@ describe("upsert", () => {
   it("does not modify upsert results", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: { User: true }, modelsMeta })
     );
 
     extendedClient.user.upsert.query.mockImplementation(
@@ -31,7 +31,7 @@ describe("upsert", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -53,7 +53,7 @@ describe("upsert", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -89,7 +89,7 @@ describe("upsert", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 

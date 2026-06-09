@@ -1,4 +1,3 @@
-import type { Prisma } from "@prisma/client";
 import { Prisma as PrismaExtensions } from "@prisma/client/extension";
 import {
   NestedOperation,
@@ -44,7 +43,7 @@ export function createSoftDeleteExtension({
     allowToOneUpdates: false,
     allowCompoundUniqueIndexWhere: false,
   },
-  dmmf,
+  modelsMeta,
 }: Config) {
   if (!defaultConfig.field) {
     throw new Error(
@@ -57,23 +56,22 @@ export function createSoftDeleteExtension({
     );
   }
 
-  const modelConfig: Partial<Record<Prisma.ModelName, ModelConfig>> = {};
+  const modelConfig: Record<string, ModelConfig> = {};
 
   Object.keys(models).forEach((model) => {
-    const modelName = model as Prisma.ModelName;
-    const config = models[modelName];
+    const config = models[model];
     if (config) {
-      modelConfig[modelName] =
+      modelConfig[model] =
         typeof config === "boolean" && config ? defaultConfig : config;
     }
   });
 
-  const context = createContext(dmmf);
+  const context = createContext(modelsMeta);
 
   const createParamsByModel = Object.keys(modelConfig).reduce<
     Record<string, Record<string, ConfigBound<CreateParams> | undefined>>
   >((acc, model) => {
-    const config = modelConfig[model as Prisma.ModelName]!;
+    const config = modelConfig[model]!;
     return {
       ...acc,
       [model]: {
@@ -108,7 +106,7 @@ export function createSoftDeleteExtension({
   const modifyResultByModel = Object.keys(modelConfig).reduce<
     Record<string, Record<string, ConfigBound<ModifyResult> | undefined>>
   >((acc, model) => {
-    const config = modelConfig[model as Prisma.ModelName]!;
+    const config = modelConfig[model]!;
     return {
       ...acc,
       [model]: {
@@ -118,35 +116,30 @@ export function createSoftDeleteExtension({
     };
   }, {});
 
-  // before handling root params generate deleted value so it is consistent
-  // for the query. Add it to root params and get it from scope?
-
   return PrismaExtensions.defineExtension((client) => {
     return client.$extends({
       query: {
         $allModels: {
-          // @ts-expect-error - we don't know what the client is
           $allOperations: withNestedOperations({
-            dmmf,
+            modelsMeta,
             async $rootOperation(initialParams) {
+              const model = String(initialParams.model || "");
               const createParams =
-                createParamsByModel[initialParams.model || ""]?.[
-                  initialParams.operation
-                ];
+                createParamsByModel[model]?.[initialParams.operation];
 
               if (!createParams) return initialParams.query(initialParams.args);
 
-              const { params, ctx } = createParams(initialParams);
-              const { model } = params;
+              const { params, ctx } = createParams(initialParams as any);
+              const { model: paramsModel } = params;
 
               const operationChanged =
                 params.operation !== initialParams.operation;
 
               const result = operationChanged
                 ? // @ts-expect-error - we don't know what the client is
-                  await client[model[0].toLowerCase() + model.slice(1)][
-                    params.operation
-                  ](params.args)
+                  await client[
+                    paramsModel![0].toLowerCase() + paramsModel!.slice(1)
+                  ][params.operation](params.args)
                 : await params.query(params.args);
 
               const modifyResult =
@@ -157,10 +150,9 @@ export function createSoftDeleteExtension({
               return modifyResult(result, params, ctx);
             },
             async $allNestedOperations(initialParams) {
+              const model = String(initialParams.model || "");
               const createParams =
-                createParamsByModel[initialParams.model || ""]?.[
-                  initialParams.operation
-                ];
+                createParamsByModel[model]?.[initialParams.operation];
 
               if (!createParams) return initialParams.query(initialParams.args);
 
@@ -181,6 +173,6 @@ export function createSoftDeleteExtension({
           }),
         },
       },
-    });
+    } as any);
   });
 }

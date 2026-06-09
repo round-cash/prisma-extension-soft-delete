@@ -1,5 +1,19 @@
-import type { Prisma } from "@prisma/client";
-import type { BaseDMMF } from "@prisma/client/runtime/library";
+export type RelationField = {
+  name: string;
+  kind: string;
+  isList: boolean;
+  type: string;
+  relationName: string;
+};
+
+export type ModelsMeta = Record<
+  string,
+  {
+    uniqueFields: string[];
+    uniqueIndexFields: string[];
+    relations: RelationField[];
+  }
+>;
 
 export type Context = {
   uniqueFieldsByModel: Record<string, string[]>;
@@ -14,7 +28,7 @@ export type ModelConfig = {
 };
 
 export type Config = {
-  models: Partial<Record<Prisma.ModelName, ModelConfig | boolean>>;
+  models: Record<string, ModelConfig | boolean>;
   defaultConfig?: ModelConfig;
-  dmmf: BaseDMMF;
+  modelsMeta: ModelsMeta;
 };

@@ -1,12 +1,12 @@
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
-import { Prisma } from "@prisma/client";
+import { modelsMeta } from "../../generated/nested-ops-meta";
 
 describe("aggregate", () => {
   it("does not change aggregate action if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: {}, modelsMeta })
     );
 
     await extendedClient.user.aggregate({
@@ -28,7 +28,7 @@ describe("aggregate", () => {
         models: {
           User: true,
         },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -47,7 +47,7 @@ describe("aggregate", () => {
         models: {
           User: true,
         },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`queries findFirstOrThrow findFirstOrThrow throws for soft deleted records 1`] = `
+"
+Invalid \`testClient.user.findFirstOrThrow()\` invocation in
+/Users/utkuturunc/Projects/prisma-extension-soft-delete/test/e2e/queries.test.ts:347:25
+
+  344 expect(foundUser!.id).toEqual(firstUser.id);
+  345 
+  346 await expect(() =>
+→ 347   testClient.user.findFirstOrThrow(
+An operation failed because it depends on one or more records that were required but not found. No record was found for a query."
+`;
+
+exports[`queries findUniqueOrThrow findUniqueOrThrow throws for soft deleted records 1`] = `
+"
+Invalid \`prisma.user.findFirstOrThrow()\` invocation:
+
+
+An operation failed because it depends on one or more records that were required but not found. No record was found for a query."
+`;

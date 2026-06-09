@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { modelsMeta } from "../../generated/nested-ops-meta";
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
 
@@ -6,7 +6,7 @@ describe("findUniqueOrThrow", () => {
   it("does not change findUniqueOrThrow params if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: {}, modelsMeta })
     );
 
     await extendedClient.user.findUniqueOrThrow({
@@ -22,7 +22,7 @@ describe("findUniqueOrThrow", () => {
   it("does not modify findUniqueOrThrow results", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: { User: true }, modelsMeta })
     );
 
     const queryResult = { id: 1, deleted: true };
@@ -42,7 +42,7 @@ describe("findUniqueOrThrow", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -65,7 +65,7 @@ describe("findUniqueOrThrow", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -88,7 +88,7 @@ describe("findUniqueOrThrow", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -106,7 +106,7 @@ describe("findUniqueOrThrow", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 

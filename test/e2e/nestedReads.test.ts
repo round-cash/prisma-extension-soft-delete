@@ -1,4 +1,6 @@
-import { Prisma, PrismaClient, User } from "@prisma/client";
+import { createTestClient } from "./client";
+import { modelsMeta } from "../../generated/nested-ops-meta";
+import type { User } from "../../generated/prisma/client";
 import faker from "faker";
 
 import { createSoftDeleteExtension } from "../../src";
@@ -9,10 +11,10 @@ describe("nested reads", () => {
   let user: User;
 
   beforeAll(async () => {
-    testClient = new PrismaClient();
+    testClient = createTestClient();
     testClient = testClient.$extends(
       createSoftDeleteExtension(
-        { models: { Comment: true, Profile: true }, dmmf: Prisma.dmmf },
+        { models: { Comment: true, Profile: true }, modelsMeta },
         // @ts-expect-error - we don't know what the client is
         { client: testClient }
       )

@@ -1,12 +1,12 @@
 import { createSoftDeleteExtension } from "../../src";
 import { MockClient } from "./utils/mockClient";
-import { Prisma } from "@prisma/client";
+import { modelsMeta } from "../../generated/nested-ops-meta";
 
 describe("deleteMany", () => {
   it("does not change deleteMany action if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: {}, modelsMeta })
     );
 
     await extendedClient.user.deleteMany({
@@ -22,7 +22,7 @@ describe("deleteMany", () => {
   it("does not change nested deleteMany action if model is not in the list", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: {}, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: {}, modelsMeta })
     );
 
     await extendedClient.user.update({
@@ -52,7 +52,7 @@ describe("deleteMany", () => {
   it("does not modify deleteMany results", async () => {
     const client = new MockClient();
     const extendedClient = client.$extends(
-      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: { User: true }, modelsMeta })
     );
 
     const queryResult = { count: 1 };
@@ -71,7 +71,7 @@ describe("deleteMany", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -91,7 +91,7 @@ describe("deleteMany", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -109,7 +109,7 @@ describe("deleteMany", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { User: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 
@@ -127,7 +127,7 @@ describe("deleteMany", () => {
     const extendedClient = client.$extends(
       createSoftDeleteExtension({
         models: { Post: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 

@@ -2,7 +2,9 @@ import faker from "faker";
 
 import { createSoftDeleteExtension } from "../../src";
 import client from "./client";
-import { Prisma, PrismaClient, Profile, User } from "./../../prisma/generated";
+import { createTestClient } from "./client";
+import { modelsMeta } from "../../generated/nested-ops-meta";
+import type { Profile, User } from "../../generated/prisma/client";
 
 describe("output", () => {
   let testClient: any;
@@ -10,11 +12,11 @@ describe("output", () => {
   let user: User;
 
   beforeAll(async () => {
-    testClient = new PrismaClient();
+    testClient = createTestClient();
     testClient = testClient.$extends(
       createSoftDeleteExtension({
         models: { Comment: true, Profile: true },
-        dmmf: Prisma.dmmf,
+        modelsMeta,
       })
     );
 

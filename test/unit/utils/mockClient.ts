@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "../../../generated/prisma/client";
 
 type DelegateByModel<Model extends Prisma.ModelName> = Model extends "User"
   ? Prisma.UserDelegate<any>

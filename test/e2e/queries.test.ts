@@ -1,4 +1,7 @@
-import { Comment, PrismaClient, Profile, User, Prisma } from "@prisma/client";
+import { createTestClient } from "./client";
+import { modelsMeta } from "../../generated/nested-ops-meta";
+import { Prisma, PrismaClient } from "../../generated/prisma/client";
+import type { Comment, Profile, User } from "../../generated/prisma/client";
 import faker from "faker";
 
 import { createSoftDeleteExtension } from "../../src";
@@ -13,9 +16,9 @@ describe("queries", () => {
   let comment: Comment;
 
   beforeAll(async () => {
-    testClient = new PrismaClient();
+    testClient = createTestClient();
     testClient = testClient.$extends(
-      createSoftDeleteExtension({ models: { User: true }, dmmf: Prisma.dmmf })
+      createSoftDeleteExtension({ models: { User: true }, modelsMeta })
     );
 
     profile = await client.profile.create({
@@ -344,7 +347,7 @@ describe("queries", () => {
         testClient.user.findFirstOrThrow({
           where: { email: deletedUser.email },
         })
-      ).rejects.toThrowError("No User found");
+      ).rejects.toThrowErrorMatchingSnapshot();
     });
   });
 
@@ -367,7 +370,7 @@ describe("queries", () => {
       let localClient = testClient;
 
       // uncomment to make this test succeed
-      // localClient = new PrismaClient();
+      // localClient = createTestClient();
 
       await localClient.$transaction(
         async (transactionClient: any) => {
@@ -402,7 +405,7 @@ describe("queries", () => {
       let localClient: PrismaClient = testClient;
 
       // uncomment to make this test succeed
-      // localClient = new PrismaClient();
+      // localClient = createTestClient();
 
       const [[userRead1, _, userRead2]] = await Promise.all([
         localClient.$transaction(
@@ -520,7 +523,7 @@ describe("queries", () => {
         testClient.user.findUniqueOrThrow({
           where: { id: deletedUser.id },
         })
-      ).rejects.toThrowError("No User found");
+      ).rejects.toThrowErrorMatchingSnapshot();
     });
 
     it("throws a useful error when invalid where is passed", async () => {

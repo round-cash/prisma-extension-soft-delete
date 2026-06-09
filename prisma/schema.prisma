@@ -1,15 +1,15 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
-generator client_output {
-  provider = "prisma-client-js"
-  output   = "./generated"
+generator nestedOperationsMeta {
+  provider = "prisma-extension-nested-operations-generator"
+  output   = "../generated/nested-ops-meta"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
